@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Nav from '../components/shop/Nav'
 import ShopProducts from '../components/shop/ShopProducts'
 import Slider from "../components/slider/Slider"
-import products from "../product"
+
+import axios from 'axios'
 
 
 
 const Shop = () => {
+    const [products, setProducts] = useState([])
+
+    useEffect(() => {
+        async function fetchProducts() {
+            const { data } = await axios.get("http://127.0.0.1:8000/api/products/")
+            setProducts(data)
+        }
+        fetchProducts()
+    }, [])
 
     return (
         <div>

@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import Rating from "./Rating"
-import products from "../../product"
 import { Link, useParams } from "react-router-dom"
 import { HiShoppingBag } from "react-icons/hi"
+import axios from 'axios'
 
 import img1 from "../../assets/Products/beautiful-elegance-luxury-fashion-green-handbag.png"
 
 const ProductPage = () => {
     const { id } = useParams();
-    const thisProduct = products.find(prod => prod._id === id)
-    console.log(thisProduct)
+    // const thisProduct = products.find(prod => prod._id === id)
+    const [product, setProduct] = useState([])
+
+    useEffect(() => {
+        async function fetchProducts() {
+            const { data } = await axios.get(`http://127.0.0.1:8000/api/products/${id}`)
+            setProduct(data)
+        }
+        fetchProducts()
+    }, [])
     return (
         <div>
             <div className="container py-4 flex items-center gap-3 pb-9">
@@ -39,25 +47,25 @@ const ProductPage = () => {
                 </div>
                 <div>
                     <div className="flex flex-row space-x-10">
-                        <h2 className="text-3xl font-medium uppercase mb-2">Woodie Blake</h2>
+                        <h2 className="text-3xl font-medium uppercase mb-2">{product.name}</h2>
                         <div><p className="text-xs font-semibold text-white bg-primary rounded-full text-center py-2 px-4">20% OFF</p></div>
                     </div>
                     <div className="flex space-x-4 py-3">
-                        <p className="text-gray-800 font-semibold text-lg">$110.0</p>
+                        <p className="text-gray-800 font-semibold text-lg">{product.price}</p>
                         <p className="text-gray-400 line-through text-lg">$350.0</p>
                     </div>
                     <div className="space-x-6 flex">
                         <div className="text-primary space-x-1">
                             <Rating />
                         </div>
-                        <p>(45)</p>
+                        <p>{product.numReviews}</p>
                     </div>
                     <div class="border-b-2 pt-4"></div>
                     <div class="flex space-x-4 py-4 pb-8">
                         <p className="font-medium text-[14px] tracking-wide">Availability:</p>
-                        <p className="font-medium text-[14px] tracking-wide text-green-500">In Stock</p>
+                        <p className="font-medium text-[14px] tracking-wide text-green-500">{product.countInStock}</p>
                     </div>
-                    <p className="pb-6">Versatile, comfortable, and chic! Three words that describe Blake by Panda.</p>
+                    <p className="pb-6">{product.description}</p>
                     <div className="flex flex-row space-x-20 pb-8 items-center">
                         <p>Color</p>
                         <div className="flex space-x-3">
