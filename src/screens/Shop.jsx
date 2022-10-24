@@ -1,22 +1,37 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Nav from '../components/shop/Nav'
 import ShopProducts from '../components/shop/ShopProducts'
 import Slider from "../components/slider/Slider"
+import { useSelector, useDispatch } from "react-redux"
+import { productsFetch } from "../components/redux/slices/productsSlice"
 
-import axios from 'axios'
+// import axios from 'axios'
+
 
 
 
 const Shop = () => {
-    const [products, setProducts] = useState([])
+    // const [products, setProducts] = useState([])
+
+    // useEffect(() => {
+    //     // async function fetchProducts() {
+    //     //     const { data } = await axios.get("http://127.0.0.1:8000/api/products/")
+    //     //     setProducts(data)
+    //     // }
+    //     // fetchProducts()
+    //     store.dispatch(productsFetch())
+
+    // }, [])
+
+    const products = useSelector((state) => state.products.productLists)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        async function fetchProducts() {
-            const { data } = await axios.get("http://127.0.0.1:8000/api/products/")
-            setProducts(data)
-        }
-        fetchProducts()
+        dispatch(productsFetch())
+        console.log(productsFetch())
     }, [])
+
+
 
     return (
         <div>
